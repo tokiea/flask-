@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        h1, h4, div {
+            text-align: center;
+        }
+
+        ul:after {
+            content: "";
+            display: block;
+            clear: both;
+            height: 0;
+        }
+
+        ul {
+            zoom: 1;
+
+        }
+
+        li {
+            margin: 0 10px;
+            list-style: none;
+            float: left;
+        }
+
+        form {
+            margin: 50px 0;
+        }
+    </style>
+    <script>
+        var list = Array();
+        var count = 0
+
+        function deleteImage(_this) {
+            var li = _this.parentElement.parentElement
+            li.outerHTML = null;
+            let num = list.indexOf(li)
+            list.splice(num, 1);
+            var input = document.querySelectorAll('count')[num];
+            input.outerHTML = null
+
+        }
+
+        function checkImage(_this) {
+            if (_this.files.length !== 0) {
+                count++
+                var showEle = document.querySelector('#show');
+                var h4 = document.createElement('h4');
+                h4.innerText = _this.files[0].name;
+                var div = document.createElement('div');
+                var button = document.createElement('button');
+                button.innerText = '删除';
+                button.onclick = function () {
+                    deleteImage(this)
+                };
+
+                div.appendChild(button);
+                var url = window.URL.createObjectURL(_this.files[0]);
+
+                var image = document.createElement('img');
+
+                image.style.width = '150px';
+                image.style.height = '150px';
+                image.setAttribute('src', url);
+                var li = document.createElement('li');
+                li.appendChild(h4);
+                li.appendChild(image);
+                li.appendChild(div);
+                showEle.appendChild(li)
+                list.push(li)
+                _this.style.display = 'none'
+                var input = document.createElement('input');
+                input.type = 'file'
+                input.setAttribute('datatype', 'image')
+                input.name = count.toString()
+
+                input.setAttribute('onchange', 'checkImage(this)');
+                var form_div = document.querySelector('#form_div');
+                form_div.appendChild(input)
+
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div>
+    <h1>图像识别</h1>
+    <ul id="show" style="margin:0 18%">
+
+    </ul>
+
+    <form action="" style="text-align: center" id="form">
+        <div id="form_div" style="position: relative;left: 45px">
+            <input type="file" datatype="image" name="0" onchange="checkImage(this)">
+        </div>
+
+        <div style="margin: 50px 0;">
+            <button style="width: 200px;height: 45px;border-radius: 5px;background: #00ae00;color: aliceblue;font-weight: bolder;font-size: large;border: none">
+                提 交
+            </button>
+        </div>
+    </form>
+
+
+</div>
+
+
+</body>
+</html>

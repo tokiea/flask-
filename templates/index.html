@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        h1, h4, h3 ,div {
+            text-align: center;
+        }
+
+        ul:after {
+            content: "";
+            display: block;
+            clear: both;
+            height: 0;
+        }
+
+        ul {
+            zoom: 1;
+            position: relative;
+
+        }
+
+        li {
+            margin: 0 10px;
+            list-style: none;
+            float: left;
+        }
+
+        form {
+            margin: 50px 0;
+        }
+
+        img {
+            border-radius: 20px;
+        }
+
+        li button {
+            border-radius: 5px;
+            background: red;
+            border: none;
+            color: white;
+            font-weight: bolder;
+            padding: 5px 10px;
+        }
+    </style>
+    <script>
+        var list = Array();
+        var count = 0;
+
+        function selectType(value) {
+            var form = document.querySelector('#form');
+            form.action = value
+            var selectbox = document.querySelector('#selectbox');
+            var box = document.querySelector('#box');
+            selectbox.style.display = 'none';
+            box.style.display = 'block'
+        }
+
+        function reSelect() {
+            var selectbox = document.querySelector('#selectbox');
+            var box = document.querySelector('#box');
+            selectbox.style.display = 'block';
+            box.style.display = 'none'
+        }
+
+        function deleteImage(_this) {
+            var li = _this.parentElement.parentElement;
+            li.outerHTML = null;
+            let num = list.indexOf(li);
+            list.splice(num, 1);
+            var input = document.querySelectorAll('count')[num];
+            input.outerHTML = null
+
+        }
+
+        function checkImage(_this) {
+            if (_this.files.length !== 0) {
+                count++
+                var showEle = document.querySelector('#show');
+                var h4 = document.createElement('h4');
+                h4.innerText = _this.files[0].name;
+                var div = document.createElement('div');
+                var button = document.createElement('button');
+                button.innerText = '删除';
+                button.onclick = function () {
+                    deleteImage(this)
+                };
+
+                div.appendChild(button);
+                var url = window.URL.createObjectURL(_this.files[0]);
+
+                var image = document.createElement('img');
+
+                image.style.width = '150px';
+                image.style.height = '150px';
+                image.setAttribute('src', url);
+                var li = document.createElement('li');
+                li.appendChild(h4);
+                li.appendChild(image);
+                li.appendChild(div);
+                showEle.appendChild(li)
+                list.push(li)
+                _this.style.display = 'none'
+                var input = document.createElement('input');
+                input.type = 'file'
+                input.setAttribute('datatype', 'image')
+                input.name = count.toString()
+
+                input.setAttribute('onchange', 'checkImage(this)');
+                var form_div = document.querySelector('#form_div');
+                form_div.appendChild(input)
+
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="selectbox">
+    <h1>请选择</h1>
+    <ul style="left: calc(50% - 350px)">
+        <li onclick="selectType('/dog')">
+            <h3>识别小狗</h3>
+            <img style="width: 300px;height: 300px"
+                 src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600422136261&di=bf84f9aec490c3e074857a976400e674&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201509%2F20%2F20150920074629_vWh4n.thumb.700_0.jpeg"
+                 alt="">
+        </li>
+        <li onclick="selectType('/people')">
+            <h3>识别人像</h3>
+            <img style="width: 300px;height: 300px"
+                 src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600422210770&di=672ee165f0a8a4a4e9bc6bbfa833be66&imgtype=0&src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F201502%2F23%2F20150223161414_JrmvA.png"
+                 alt="">
+        </li>
+    </ul>
+</div>
+<div id="box" style="display: none">
+    <h1>图像识别</h1>
+    <ul id="show" style="margin:0 18%">
+
+    </ul>
+
+    <form action="/dog" method="post" enctype="multipart/form-data" style="text-align: center" id="form">
+        <div id="form_div" style="position: relative;left: 45px">
+            <input type="file" datatype="image" name="0" onchange="checkImage(this)">
+        </div>
+
+        <div style="margin: 50px 0;">
+            <button type="submit"
+                    style="width: 200px;height: 45px;border-radius: 5px;background: #00ae00;color: aliceblue;font-weight: bolder;font-size: large;border: none">
+                提 交
+            </button>
+
+        </div>
+
+    </form>
+    <div style="text-align: center">
+        <button onclick="reSelect()">重选识别类型</button>
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

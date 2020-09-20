@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        h1, h3 ,div {
+            text-align: center;
+        }
+        ul:after {
+            content: "";
+            display: block;
+            clear: both;
+            height: 0;
+        }
+
+        ul {
+            zoom: 1;
+            position: relative;
+
+        }
+
+        li {
+            margin: 0 10px;
+            list-style: none;
+            float: left;
+        }
+        img {
+            border-radius: 20px;
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+<div>
+<h1>识别结果</h1>
+    <ul style="margin:0 18%">
+    {% for foo in context %}
+        <li>
+        <h3>{{ foo['static'][23:] }}</h3>
+        <div><img src="{{ foo['static'] }}" alt=""></div>
+        <p style="color: red;font-weight: bold">{{ foo['result'] }}</p>
+        </li>
+    {% endfor %}
+</ul>
+
+</div>
+
+
+
+</body>
+</html>
